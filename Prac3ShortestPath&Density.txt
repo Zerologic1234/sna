@@ -1,0 +1,41 @@
+Prac3 ShortestPath&Density&Ecocentric
+
+library(igraph)
+
+# Create an adjacency matrix
+matt <- as.matrix(read.table(text = "
+          node R S T U
+            R 7 5 0 0
+            S 7 0 0 2
+            T 0 6 0 0
+            U 4 0 1 0", header = TRUE))
+
+nms <- matt[, 1]
+matt <- matt[, -1]
+colnames(matt) <- rownames(matt) <- nms
+matt[is.na(matt)] <- 0
+
+# Create a graph from the adjacency matrix
+g <- graph.adjacency(matt, weighted = TRUE)
+
+# Plot the graph
+plot(g)
+
+# Compute all shortest paths using Dijkstra's algorithm
+s.paths <- shortest.paths(g, algorithm = "dijkstra")
+print(s.paths)
+
+# Compute shortest path from 'R' to 'S'
+shortest_path_R_to_S <- shortest.paths(g, v = "R", to = "S")
+print(shortest_path_R_to_S)
+
+# Plot the graph with edge weights
+plot(g, edge.label = E(g)$weight)
+
+# Create a directed graph from formula notation
+dg <- graph.formula(1-+2, 1-+3, 2++3)
+plot(dg)
+
+# Compute the density of the graph
+graph.density(dg, loops = TRUE)
+
